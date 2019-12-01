@@ -55,6 +55,7 @@ void setup() {
     Serial.println("Failed to perform reading :(");
     return;
   }
+  /*
   Serial.print("Temperature = ");
   Serial.print(bme.temperature);
   Serial.println(" *C");
@@ -74,15 +75,18 @@ void setup() {
   Serial.print("Approx. Altitude = ");
   Serial.print(bme.readAltitude(SEALEVELPRESSURE_HPA));
   Serial.println(" m");
+  */
 
   String temperature = String((int)((ceilf(bme.temperature * 100) / 100) * 100));
   String pressure = String((int)((ceilf(bme.pressure * 100) / 10000) * 100));
   String humidity = String((int)((ceilf(bme.humidity * 100) / 100) * 100));
   String gas_resistance = String((int)((ceilf(bme.gas_resistance * 100) / 100000) * 100));
+  /*
   Serial.println(temperature);
   Serial.println(pressure);
   Serial.println(humidity);
   Serial.println(gas_resistance);
+  */
 
   String StringValues = humidity + 'a';
   StringValues += pressure+ 'a';
@@ -92,7 +96,7 @@ void setup() {
 
   StringValues.replace('-','.');
  
-  Serial.println(StringValues);
+  //Serial.println(StringValues);
  int m = 0;
   for (int i = values.length() -1 ; i >= 0 ; i--)
   {
@@ -106,24 +110,15 @@ void setup() {
   values.insert(13, 1, '-');
   values.insert(18, 1, '-');
   values.insert(23, 1, '-');
- Serial.println("omg"); 
-  Serial.println(values.c_str()); 
- Serial.println("omg"); 
-
- Serial.println("wtf"); 
- 
  
   BLEDevice::init("Outdoor");
   pAdvertising = BLEDevice::getAdvertising();
   BLEDevice::startAdvertising();
   setBeacon();
   pAdvertising->start();
-  Serial.println("Advertizing started...");
-
   delay(100);
   pAdvertising->stop();
 
-  Serial.printf("enter deep sleep\n");
   esp_deep_sleep(1000000LL * GPIO_DEEP_SLEEP_DURATION);
 }
 
